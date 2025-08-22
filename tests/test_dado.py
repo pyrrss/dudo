@@ -23,3 +23,23 @@ class TestDado:
         for _ in range(10):
             valor_generado = dado.generar_valor_aleatorio()
             assert valor_generado in range(1, 7)
+
+    def test_get_nombre_pinta(self):
+        """
+        se verifica que para un cierto número de pinta se devuelve el nombre correcto
+        1: "As"
+        2: "Tonto"
+        3: "Tren"
+        4: "Cuadra"
+        5: "Quina":
+        6: "Sexto"
+        """
+        dado = Dado()
+
+        assert dado.get_nombre_pinta(1) == "As"
+        assert dado.get_nombre_pinta(2) == "Tonto"
+        assert dado.get_nombre_pinta(3) == "Tren"
+        assert dado.get_nombre_pinta(4) == "Cuadra"
+        assert dado.get_nombre_pinta(5) == "Quina"
+        assert dado.get_nombre_pinta(6) == "Sexto"
+
