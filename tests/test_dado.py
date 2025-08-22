@@ -43,3 +43,19 @@ class TestDado:
         assert dado.get_nombre_pinta(5) == "Quina"
         assert dado.get_nombre_pinta(6) == "Sexto"
 
+    def test_generar_valor_aleatorio_actualiza_estado_interno(self, mocker):
+        """
+        se verifica que al genear un valor aleatorio/lanzar el dado,
+        internamente se guarde de forma correcta y persistente el valor
+        """
+        mock_generador_aleatorio = mocker.patch(
+                "src.servicios.generador_aleatorio.GeneradorAleatorio.generar_valor_aleatorio",
+                return_value=5
+                )
+
+        dado = Dado()
+
+        dado.generar_valor_aleatorio()
+
+        assert dado.valor_actual == 5
+
