@@ -7,3 +7,7 @@ class Cacho:
 
     def obtener_dados(self):
         return self.lista_de_dados
+
+    def agitar(self):
+        for dado in self.lista_de_dados:
+            dado.generar_valor_aleatorio()
