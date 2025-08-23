@@ -11,3 +11,14 @@ class TestCacho:
         cacho = Cacho()
         lista_de_dados = cacho.obtener_dados()
         assert all(isinstance(i, Dado) for i in lista_de_dados)
+        
+    def test_dados_agitados_en_el_rango(self):
+        """
+        se verifica que luego de agitar los dados
+        esten en el rango
+        """
+        cacho = Cacho()
+        cacho.agitar()
+        lista_de_dados = cacho.obtener_dados()
+        for i in range (len(lista_de_dados)):
+            assert lista_de_dados[i].obtener_valor in range (1,7)
