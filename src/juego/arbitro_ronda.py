@@ -35,3 +35,13 @@ class ArbitroRonda:
             dados_en_juego += cacho.get_cantidad_dados()
 
         return dados_en_juego <= cantidad_inicial_dados // 2
+
+    def manejar_calzar(self, lista_cachos: list[Cacho], apuesta: tuple[int, int], apostador: Cacho, calzador: Cacho, ronda_especial: bool = False) -> bool:
+        cantidad_total = self._contar_total(lista_cachos, apuesta[1])
+
+        if cantidad_total == apuesta[0]:
+            calzador.agregar_dado()
+            return True
+        else:
+            calzador.quitar_dado()
+            return False
