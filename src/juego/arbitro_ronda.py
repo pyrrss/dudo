@@ -23,3 +23,15 @@ class ArbitroRonda:
         else:
             apostador.quitar_dado()
             return apostador
+    
+    def puede_calzar(self, lista_cachos: list[Cacho], calzador: Cacho) -> bool:
+        if calzador.get_cantidad_dados() == 1:
+            return True
+
+        cantidad_inicial_dados = len(lista_cachos) * 5
+
+        dados_en_juego = 0
+        for cacho in lista_cachos:
+            dados_en_juego += cacho.get_cantidad_dados()
+
+        return dados_en_juego <= cantidad_inicial_dados // 2
