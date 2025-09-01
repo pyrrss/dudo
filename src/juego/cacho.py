@@ -16,7 +16,7 @@ class Cacho:
         return [dado.valor_actual for dado in self.dados]
 
     def get_cantidad_dados(self) -> int:
-        return len(self.dados)   
+        return len(self.dados)
 
     def agitar(self):
         for dado in self.dados:
