@@ -132,3 +132,20 @@ class TestCacho:
         cacho.set_valores_dados(valores)
 
         assert cacho.get_valores() != valores # -> mantiene sus valores correctos anteriores
+
+    def test_ocultar_y_mostrar_dados(self):
+        """
+        se verifica que al ocultar dados, sus valores se muestren como '?',
+        y luego al mostrarlos se muestren sus valores enteros
+        """
+        cacho = Cacho()
+        cacho.agitar()
+        cacho.ocultar_dados()
+
+        for valor in cacho.get_valores():
+            assert valor == "?"
+
+        cacho.mostrar_dados()
+
+        for valor in cacho.get_valores():
+            assert isinstance(valor, int)
