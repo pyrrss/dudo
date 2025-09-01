@@ -5,6 +5,15 @@ class ValidadorApuesta:
         pass
 
     def validar_nueva_apuesta(self, apuesta_actual: tuple[int, int], apuesta_nueva: tuple[int, int]) -> bool:
+
+        # ---------- revisión de dominio --------
+        if not apuesta_nueva[1] in range(1, 7) or not apuesta_nueva[0] > 0:
+            return False
+
+        # ---------- revisión para no poder partir con ases --------
+        if apuesta_actual == (0, 0) and apuesta_nueva[1] == 1: # -> (0, 0) para indicar primer apuesta
+            return False
+        
         # -> sin ases involucrados
         if apuesta_nueva[1] != 1 and apuesta_actual[1] != 1:
             if apuesta_nueva[0] > apuesta_actual[0] and apuesta_nueva[1] == apuesta_actual[1]:
