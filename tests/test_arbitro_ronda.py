@@ -92,3 +92,51 @@ class TestArbitroRonda:
         arbitro_ronda = ArbitroRonda()
         assert arbitro_ronda.puede_calzar(lista_cachos, cacho_b) is False
 
+    @pytest.mark.parametrize("lista_valores",[
+            [1, 4, 3, 6, 2, 4, 4, 6, 5, 5],
+            [5, 5, 1, 2, 4, 3, 6, 4, 6, 4],
+            [6, 6, 1, 4, 3, 2, 4, 3, 4, 6]
+        ])
+    def test_jugador_calza_correctamente_y_gana_dado(self, lista_valores):
+        """
+        verificar que si un jugador calza incorrectamente, gana un dado (si ya tiene 5, queda en espera)
+        """
+        cacho_a = Cacho()
+        cacho_b = Cacho()
+        cacho_a.set_valores_dados(lista_valores[:5])
+        cacho_b.set_valores_dados(lista_valores[5:])
+        lista_cachos = [cacho_a, cacho_b]
+
+        cantidad_inicial = cacho_b.get_cantidad_dados()
+
+        apuesta = (4, 4) # -> 4 cuadras (contando ases como comodines, se cumple exactamente en todos los casos)
+        arbitro_ronda = ArbitroRonda()
+        arbitro_ronda.manejar_calzar(lista_cachos, apuesta, apostador=cacho_a, calzador=cacho_b)
+
+        assert cacho_b.get_cantidad_dados() == min(cantidad_inicial + 1, 5) # -> gana un dado (queda igual si ya tenía 5)
+        assert cacho_b.dados_en_espera == 1 # -> queda con un dado en espera
+        assert cacho_a.get_cantidad_dados() == 5 # -> queda igual
+
+    @pytest.mark.parametrize("lista_valores",[
+            [1, 4, 3, 6, 2, 4, 4, 6, 5, 5],
+            [5, 5, 1, 2, 4, 3, 6, 4, 6, 4],
+            [6, 6, 1, 4, 3, 2, 4, 3, 4, 6]
+        ])
+    def test_jugador_calza_incorrectamente_y_pierde_dado(self, lista_valores):
+        """
+        verificar que si un jugador calza incorrectamente, pierde un dado
+        """
+        cacho_a = Cacho()
+        cacho_b = Cacho()
+        cacho_a.set_valores_dados(lista_valores[:5])
+        cacho_b.set_valores_dados(lista_valores[5:])
+        lista_cachos = [cacho_a, cacho_b]
+
+        cantidad_inicial = cacho_b.get_cantidad_dados()
+
+        apuesta = (1, 4) 
+        arbitro_ronda = ArbitroRonda()
+        arbitro_ronda.manejar_calzar(lista_cachos, apuesta, apostador=cacho_a, calzador=cacho_b)
+
+        assert cacho_b.get_cantidad_dados() == cantidad_inicial - 1 # -> pierde un dado
+        assert cacho_a.get_cantidad_dados() == 5 # -> queda igual
