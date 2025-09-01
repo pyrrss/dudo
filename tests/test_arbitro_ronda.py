@@ -50,3 +50,45 @@ class TestArbitroRonda:
 
         assert cacho_a.get_cantidad_dados() == 4 # -> apostador pierde dado
         assert cacho_b.get_cantidad_dados() == 5 # -> queda igual
+
+    def test_calzar_posible_con_jugador_con_un_dado(self):
+        """
+        se verifica que si calzador tiene solo un dado, puede calzar
+        """
+        cacho_a = Cacho()
+        cacho_b = Cacho()
+        lista_cachos = [cacho_a, cacho_b]
+        cacho_b.dados = [cacho_b.dados[0]] # -> solo tiene un dado
+
+        arbitro_ronda = ArbitroRonda()
+
+        assert arbitro_ronda.puede_calzar(lista_cachos, cacho_b) is True
+    
+    def test_calzar_posible_con_mitad_dados_en_juego(self):
+        """
+        se verifica que si queda la mitad (o menos?) de dados en juego,
+        se puede calzar
+        """
+        cacho_a = Cacho()
+        cacho_b = Cacho()
+        lista_cachos = [cacho_a, cacho_b]
+        
+        # -> se dejan 5 dados en total (mitad en juego)
+        cacho_a.dados = cacho_a.dados[:2]
+        cacho_b.dados = cacho_b.dados[:3]
+
+        arbitro_ronda = ArbitroRonda()
+        assert arbitro_ronda.puede_calzar(lista_cachos, cacho_b) is True
+    
+    def test_calzar_no_posible_por_cantidad_de_dados(self):
+        """
+        se verifica que si hay más de la mitad de dados en juego,
+        no se puede calzar
+        """
+        cacho_a = Cacho()
+        cacho_b = Cacho()
+        lista_cachos = [cacho_a, cacho_b]
+
+        arbitro_ronda = ArbitroRonda()
+        assert arbitro_ronda.puede_calzar(lista_cachos, cacho_b) is False
+
