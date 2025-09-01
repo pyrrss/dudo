@@ -29,7 +29,7 @@ class TestCacho:
         """
         cacho = Cacho()
 
-        assert len(cacho.lista_dados) == 5
+        assert len(cacho.dados) == 5
 
     def test_agregar_dado_a_cacho_con_maximo_de_dados_deja_el_dado_en_espera(self):
         """
