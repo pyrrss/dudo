@@ -1,3 +1,5 @@
+import math
+
 class ValidadorApuesta:
     def __init__(self):
         pass
@@ -11,4 +13,25 @@ class ValidadorApuesta:
                 return True
             if apuesta_nueva[0] > apuesta_actual[0] and apuesta_nueva[1] > apuesta_actual[1]:
                 return True
+            
+        # -> cambio de pinta A ases
+        if apuesta_actual[1] != 1 and apuesta_nueva[1] == 1:
+
+            if self._cantidad_valida_a_ases_desde_otra_pinta(apuesta_actual[0]) == apuesta_nueva[0]:
+                return True
+
+        # -> cambio DE ases a otra pinta
+        if apuesta_actual[1] == 1 and apuesta_nueva[1] != 1:
+
+            if self._cantidad_valida_de_ases_a_otra_pinta(apuesta_actual[0]) == apuesta_nueva[0]:
+                return True
+            
         return False
+    
+    def _cantidad_valida_a_ases_desde_otra_pinta(self, cantidad_actual: int) -> int:
+        if cantidad_actual % 2 == 0:
+            return (cantidad_actual // 2) + 1
+        return math.ceil(cantidad_actual / 2)
+
+    def _cantidad_valida_de_ases_a_otra_pinta(self, cantidad_actual: int) -> int:
+        return (cantidad_actual * 2) + 1
