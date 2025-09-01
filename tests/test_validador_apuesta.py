@@ -118,3 +118,40 @@ class TestValidadorApuesta:
         validador = ValidadorApuesta()
 
         assert validador.validar_nueva_apuesta(apuesta_actual, apuesta_nueva) is False
+    
+    
+    def test_pinta_fuera_de_dominio_invalida(self):
+        """
+        se verifica que la pinta de la nueva apuesta esté en dominio 1-6
+        """
+        validador = ValidadorApuesta()
+
+        assert validador.validar_nueva_apuesta((2, 2), (3, 7)) is False
+        assert validador.validar_nueva_apuesta((4, 3), (5, 0)) is False
+
+    def test_cantidad_fuera_de_dominio_invalida(self):
+        """
+        se verifica que la cantidad de la nueva apuesta esté en dominio (>0)
+        """
+        validador = ValidadorApuesta()
+
+        assert validador.validar_nueva_apuesta((2, 2), (0, 3)) is False
+        assert validador.validar_nueva_apuesta((2, 2), (-1, 3)) is False
+
+    def test_primer_apuesta_con_pinta_valida(self):
+        """
+        se verifica que primer apuesta sea sin ases
+        """
+        validador = ValidadorApuesta()
+
+        assert validador.validar_nueva_apuesta((0, 0), (1, 2)) is True
+        assert validador.validar_nueva_apuesta((0, 0), (3, 5)) is True
+
+    def test_primer_apuesta_con_ases_invalida(self):
+        """
+        se verifica que si primer apuesta es con ases sea inválida
+        """
+        validador = ValidadorApuesta()
+
+        assert validador.validar_nueva_apuesta((0, 0), (4, 1)) is False
+        assert validador.validar_nueva_apuesta((0, 0), (6, 1)) is False
