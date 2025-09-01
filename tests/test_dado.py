@@ -2,7 +2,7 @@ from src.juego.dado import Dado
 
 class TestDado:
 
-    def test_generar_valor_aleatorio_llama_a_generador(self, mocker):
+    def test_lanzar_llama_a_generador(self, mocker):
         """
         se verifica que Dado efectivamente se comunique con servicio
         GeneradorAleatorio
@@ -12,17 +12,17 @@ class TestDado:
                 return_value=4
                 )
         dado = Dado()
-        dado.generar_valor_aleatorio()
+        dado.lanzar()
         mock_generador_aleatorio.assert_called_once()
 
-    def test_generar_valor_aleatorio_devuelve_valor_en_dominio(self):
+    def test_lanzar_deja_valor_en_dominio(self):
         """
         se verifica que valores generados pertenecen al dominio 1-6
         """
         dado = Dado()
         for _ in range(10):
-            valor_generado = dado.generar_valor_aleatorio()
-            assert valor_generado in range(1, 7)
+            dado.lanzar()
+            assert dado.valor_actual in range(1, 7)
 
     def test_get_nombre_pinta(self):
         """
@@ -34,14 +34,15 @@ class TestDado:
         5: "Quina":
         6: "Sexto"
         """
-        dado = Dado()
+        # NOTE: como el método get_nombre_pinta es estático, no necesita
+        # instancia de dado
 
-        assert dado.get_nombre_pinta(1) == "As"
-        assert dado.get_nombre_pinta(2) == "Tonto"
-        assert dado.get_nombre_pinta(3) == "Tren"
-        assert dado.get_nombre_pinta(4) == "Cuadra"
-        assert dado.get_nombre_pinta(5) == "Quina"
-        assert dado.get_nombre_pinta(6) == "Sexto"
+        assert Dado.get_nombre_pinta(1) == "As"
+        assert Dado.get_nombre_pinta(2) == "Tonto"
+        assert Dado.get_nombre_pinta(3) == "Tren"
+        assert Dado.get_nombre_pinta(4) == "Cuadra"
+        assert Dado.get_nombre_pinta(5) == "Quina"
+        assert Dado.get_nombre_pinta(6) == "Sexto"
 
     def test_generar_valor_aleatorio_actualiza_estado_interno(self, mocker):
         """
@@ -55,7 +56,7 @@ class TestDado:
 
         dado = Dado()
 
-        dado.generar_valor_aleatorio()
+        dado.lanzar()
 
         assert dado.valor_actual == 5
 

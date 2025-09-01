@@ -10,4 +10,4 @@ class Cacho:
 
     def agitar(self):
         for dado in self.lista_de_dados:
-            dado.generar_valor_aleatorio()
+            dado.lanzar()

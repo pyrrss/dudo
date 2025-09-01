@@ -13,9 +13,10 @@ class Dado:
     def __init__(self):
         self.valor_actual = None
 
-    def generar_valor_aleatorio(self):
+    def lanzar(self):
         self.valor_actual = GeneradorAleatorio.generar_valor_aleatorio()
         return self.valor_actual
-
-    def get_nombre_pinta(self, num_pinta):
-        return self.denominaciones[num_pinta]
+    
+    @staticmethod
+    def get_nombre_pinta(num_pinta):
+        return Dado.denominaciones[num_pinta]
