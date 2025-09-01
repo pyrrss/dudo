@@ -9,6 +9,9 @@ class Cacho:
     def obtener_dados(self):
         return self.dados
 
+    def get_valores(self) -> list:
+        return [dado.valor_actual for dado in self.dados]
+
     def get_cantidad_dados(self) -> int:
         return len(self.dados)   
 
@@ -31,3 +34,16 @@ class Cacho:
             self.dados.append(nuevo_dado)
         else:
             self.dados_en_espera += 1
+
+    def set_valores_dados(self, valores: list[int]) -> None:
+        if len(valores) != len(self.dados):
+            print("ERROR: número de valores no coincide con número de dados")
+            return
+
+        for valor in valores:
+            if valor not in range(1, 7) or not isinstance(valor, int):
+                print("ERROR: lista de valores inválida")
+                return
+
+        for i, dado in enumerate(self.dados):
+            dado.valor_actual = valores[i]
