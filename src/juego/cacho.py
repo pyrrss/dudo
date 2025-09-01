@@ -5,11 +5,14 @@ class Cacho:
     def __init__(self):
         self.dados = [Dado() for _ in range(5)]
         self.dados_en_espera = 0
+        self.dados_ocultos = False
 
     def obtener_dados(self):
         return self.dados
 
-    def get_valores(self) -> list:
+    def get_valores(self) -> list[int]:
+        if self.dados_ocultos:
+            return ["?" for _ in self.dados]
         return [dado.valor_actual for dado in self.dados]
 
     def get_cantidad_dados(self) -> int:
@@ -47,3 +50,9 @@ class Cacho:
 
         for i, dado in enumerate(self.dados):
             dado.valor_actual = valores[i]
+
+    def ocultar_dados(self) -> None:
+        self.dados_ocultos = True
+
+    def mostrar_dados(self) -> None:
+        self.dados_ocultos = False
