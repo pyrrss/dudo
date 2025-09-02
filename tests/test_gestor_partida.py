@@ -183,3 +183,17 @@ class TestGestorPartida:
         assert gestor.estado_especial is False
         assert gestor.tipo_ronda_especial is None
         assert gestor.cacho_que_obligo is None
+
+    def test_ronda_especial_cuando_cacho_tiene_un_dado(self):
+        """
+        cuando un cacho tiene un dado y no ha usado especial se activa la ronda especial
+        """
+        gestor = GestorPartida(2)
+        cacho_con_un_dado = gestor.lista_cachos[0]
+        cacho_con_un_dado.dados = [Mock()] 
+        
+        gestor.verificar_ronda_especial(cacho_con_un_dado)
+        
+        assert gestor.cacho_que_obligo == cacho_con_un_dado
+        assert gestor.estado_especial_pendiente is True
+        assert cacho_con_un_dado in gestor.cachos_que_usaron_especial
