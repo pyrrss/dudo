@@ -47,3 +47,9 @@ class GestorPartida:
                 return siguiente_cacho
         
         return None
+
+    def verificar_cachos_con_un_dado(self) -> Cacho:
+        for cacho in self.lista_cachos:
+            if cacho.get_cantidad_dados() == 1:
+                return cacho
+        return None
