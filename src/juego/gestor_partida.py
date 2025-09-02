@@ -92,3 +92,27 @@ class GestorPartida:
             self.cacho_que_obligo = cacho
             self.estado_especial_pendiente = True
             self.cachos_que_usaron_especial.add(cacho)
+
+    def actualizar_visibilidad_dados(self) -> None:
+        """
+        Actualiza la visibilidad de los dados según el tipo de ronda
+        """
+        # Primero ocultamos todos los dados
+        for cacho in self.lista_cachos:
+            cacho.ocultar_dados()
+
+        if self.estado_especial and self.tipo_ronda_especial == "abierto":
+            # Ronda abierta: el jugador actual no ve sus dados, pero sí los de los demás
+            for cacho in self.lista_cachos:
+                if cacho is not self.cacho_actual:
+                    cacho.mostrar_dados()
+
+        elif self.estado_especial and self.tipo_ronda_especial == "cerrado":
+            # Ronda cerrada: sólo el obligador ve sus dados, los demás no ven nada
+            if self.cacho_que_obligo is not None and self.cacho_que_obligo is self.cacho_actual:
+                self.cacho_que_obligo.mostrar_dados()
+
+        else:
+            # Ronda normal: cada jugador ve sólo sus propios dados en su turno
+            if self.cacho_actual is not None:
+                self.cacho_actual.mostrar_dados()
