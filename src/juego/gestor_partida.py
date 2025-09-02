@@ -20,18 +20,16 @@ class GestorPartida:
     def determinar_cacho_inicial(self) -> Cacho:
         cachos_participantes = self.lista_cachos.copy()
 
-        while True:  # hasta que no haya un ganador
+        while True:  
             valores = [(cacho, GeneradorAleatorio.generar_valor_aleatorio()) for cacho in cachos_participantes]
 
             max_valor = max(valores, key=lambda x: x[1])[1]
             ganadores = [cacho for cacho, valor in valores if valor == max_valor]
 
-            # si no hay empate
             if len(ganadores) == 1:
                 self.cacho_actual = ganadores[0]
                 return ganadores[0]
 
-            # si hay empate (solo empatados siguen participando)
             cachos_participantes = ganadores
 
     def establecer_direccion(self, direccion: str) -> None:
@@ -66,17 +64,14 @@ class GestorPartida:
         self.apuesta_actual = (0, 0)
         self.ultimo_apostador = None
 
-        # Si hay un iniciador predefinido, lo establecemos como cacho actual
         if self.iniciador_proxima_ronda is not None:
             self.cacho_actual = self.iniciador_proxima_ronda
             self.iniciador_proxima_ronda = None
 
-        # Agitar dados y ocultarlos
         for cacho in self.lista_cachos:
             cacho.agitar()
             cacho.ocultar_dados()
 
-        # Activar ronda especial si estaba pendiente
         if self.estado_especial_pendiente:
             self.estado_especial = True
             self.tipo_ronda_especial = self.tipo_ronda_especial_pendiente
@@ -94,25 +89,27 @@ class GestorPartida:
             self.cachos_que_usaron_especial.add(cacho)
 
     def actualizar_visibilidad_dados(self) -> None:
-        """
-        Actualiza la visibilidad de los dados según el tipo de ronda
-        """
-        # Primero ocultamos todos los dados
+
         for cacho in self.lista_cachos:
             cacho.ocultar_dados()
 
         if self.estado_especial and self.tipo_ronda_especial == "abierto":
-            # Ronda abierta: el jugador actual no ve sus dados, pero sí los de los demás
             for cacho in self.lista_cachos:
                 if cacho is not self.cacho_actual:
                     cacho.mostrar_dados()
 
         elif self.estado_especial and self.tipo_ronda_especial == "cerrado":
-            # Ronda cerrada: sólo el obligador ve sus dados, los demás no ven nada
             if self.cacho_que_obligo is not None and self.cacho_que_obligo is self.cacho_actual:
                 self.cacho_que_obligo.mostrar_dados()
 
         else:
-            # Ronda normal: cada jugador ve sólo sus propios dados en su turno
             if self.cacho_actual is not None:
                 self.cacho_actual.mostrar_dados()
+
+    def partida_terminada(self) -> bool:
+        cachos_con_dados = [c for c in self.lista_cachos if c.get_cantidad_dados() > 0]
+        return len(cachos_con_dados) <= 1
+
+    def obtener_ganador(self) -> Cacho:
+        cachos_con_dados = [c for c in self.lista_cachos if c.get_cantidad_dados() > 0]
+        return cachos_con_dados[0] if cachos_con_dados else None
