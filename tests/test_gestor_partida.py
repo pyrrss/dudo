@@ -137,3 +137,49 @@ class TestGestorPartida:
         # act y assert
         resultado = gestor.verificar_cachos_con_un_dado()
         assert resultado is None
+
+    def test_iniciar_ronda_con_iniciador_predefinido(self):
+        """
+        se verifica que si hay un iniciador para la siguiente ronda
+        (que ocurre cuando un jugador pierde/gana un dado), este
+        se setea como el cacho actual al iniciar la ronda
+        """
+        gestor = GestorPartida(2)
+        cacho_iniciador = gestor.lista_cachos[1]
+        gestor.iniciador_proxima_ronda = cacho_iniciador
+
+        gestor.iniciar_ronda() # -> se inicia ronda con iniciador seteado
+
+        assert gestor.cacho_actual == cacho_iniciador
+        assert gestor.iniciador_proxima_ronda is None # -> se limpia luego
+
+    def test_iniciar_ronda_con_estado_especial_pendiente(self):
+        """
+        se verifica que al iniciar la ronda, si habia estado especial pendiente
+        (porque un jugador la activó en la ronda anterior), se activa
+        """
+        gestor = GestorPartida(2)
+        gestor.estado_especial_pendiente = True
+        gestor.tipo_ronda_especial_pendiente = "abierto"
+
+        gestor.iniciar_ronda()
+
+        assert gestor.estado_especial is True # -> se activa ronda especial 
+        assert gestor.tipo_ronda_especial == "abierto" # -> se activa ronda abierta
+        assert gestor.estado_especial_pendiente is False # -> se desactiva
+        assert gestor.tipo_ronda_especial_pendiente is None # -> se resetea
+
+    def test_iniciar_ronda_sin_estado_especial_pendiente(self):
+        """
+        si no hay estado especial pendiente se setea en False
+        """
+        gestor = GestorPartida(2)
+        gestor.estado_especial_pendiente = False
+        gestor.estado_especial = True  
+        gestor.tipo_ronda_especial = "abierto"
+        
+        gestor.iniciar_ronda()
+        
+        assert gestor.estado_especial is False
+        assert gestor.tipo_ronda_especial is None
+        assert gestor.cacho_que_obligo is None
