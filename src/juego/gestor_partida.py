@@ -15,10 +15,11 @@ class GestorPartida:
         self.tipo_ronda_especial = None
         self.tipo_ronda_especial_pendiente = None
         self.cacho_que_obligo = None
+        self.cachos_que_usaron_especial = set()
 
     def determinar_cacho_inicial(self) -> Cacho:
         cachos_participantes = self.lista_cachos.copy()
-        
+
         while True:  # hasta que no haya un ganador
             valores = [(cacho, GeneradorAleatorio.generar_valor_aleatorio()) for cacho in cachos_participantes]
 
@@ -37,7 +38,6 @@ class GestorPartida:
         self.direccion = direccion
 
     def obtener_siguiente_cacho(self) -> Cacho:
-
         if self.direccion is None:
             self.direccion = "horario"
         
@@ -57,14 +57,12 @@ class GestorPartida:
         return None
 
     def verificar_cachos_con_un_dado(self) -> Cacho:
-
         for cacho in self.lista_cachos:
             if cacho.get_cantidad_dados() == 1:
                 return cacho
         return None
 
     def iniciar_ronda(self) -> None:
-
         self.apuesta_actual = (0, 0)
         self.ultimo_apostador = None
 
@@ -88,3 +86,9 @@ class GestorPartida:
             self.estado_especial = False
             self.tipo_ronda_especial = None
             self.cacho_que_obligo = None
+
+    def verificar_ronda_especial(self, cacho: Cacho) -> None:
+        if cacho.get_cantidad_dados() == 1 and cacho not in self.cachos_que_usaron_especial:
+            self.cacho_que_obligo = cacho
+            self.estado_especial_pendiente = True
+            self.cachos_que_usaron_especial.add(cacho)
