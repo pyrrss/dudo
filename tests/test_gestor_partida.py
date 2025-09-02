@@ -109,3 +109,30 @@ class TestGestorPartida:
         
         resultado = gestor.obtener_siguiente_cacho()
         assert resultado is None
+
+    def test_detectar_cachos_con_un_dado(self):
+        """
+        detectar cuando un cacho queda con un solo dado
+        """
+        gestor = GestorPartida(2)
+
+        # mock cacho con un dado
+        gestor.lista_cachos[1].dados = [Mock()]
+    
+        # act y assert
+        cacho_un_dado = gestor.verificar_cachos_con_un_dado()
+        assert cacho_un_dado == gestor.lista_cachos[1]
+
+    def test_cachos_con_un_dado_retorna_none(self):
+        """
+        si ningun cacho tiene exactamente un dado retorna None
+        """
+        gestor = GestorPartida(2)
+        
+        # mock cachos con mas de un dado
+        gestor.lista_cachos[0].dados = [Mock(), Mock()]
+        gestor.lista_cachos[1].dados = [Mock(), Mock(), Mock()]
+        
+        # act y assert
+        resultado = gestor.verificar_cachos_con_un_dado()
+        assert resultado is None
