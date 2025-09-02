@@ -49,3 +49,63 @@ class TestGestorPartida:
     
         # assert
         assert cacho_inicial == gestor.cacho_actual
+
+    def test_establecer_direccion(self):
+        """
+        establecer la direccion de la partida
+        """
+        gestor = GestorPartida(2)
+    
+        # acts y asserts
+        gestor.establecer_direccion("antihorario")
+        assert gestor.direccion == "antihorario"
+        gestor.establecer_direccion("horario")
+        assert gestor.direccion == "horario"
+
+    def test_siguiente_turno_horario(self):
+        """
+        obtener el cacho que juega en el siguiente turno, en sentido horario
+        """
+        gestor = GestorPartida(3)
+        gestor.direccion = "horario"
+        gestor.cacho_actual = gestor.lista_cachos[0]
+    
+        # act y assert
+        siguiente = gestor.obtener_siguiente_cacho()
+        assert siguiente == gestor.lista_cachos[1]
+
+    def test_siguiente_turno_antihorario(self):
+        """
+        obtener el cacho que juega en el siguiente turno, en sentido antihorario
+        """
+        gestor = GestorPartida(3)
+        gestor.direccion = "antihorario"
+        gestor.cacho_actual = gestor.lista_cachos[0]
+    
+        # act y assert
+        siguiente = gestor.obtener_siguiente_cacho()
+        assert siguiente == gestor.lista_cachos[2] 
+
+    def test_obtener_siguiente_cacho_sin_direccion(self):
+        """
+        cuando no se ha establecido direccion por defecto usa horario
+        """
+        gestor = GestorPartida(3)
+        gestor.cacho_actual = gestor.lista_cachos[0]
+        gestor.direccion = None
+        
+        siguiente = gestor.obtener_siguiente_cacho()
+        assert siguiente == gestor.lista_cachos[1]
+        assert gestor.direccion == "horario"
+
+    def test_obtener_siguiente_cacho_con_cachos_sin_dados(self):
+        """
+        si todos los cachos no tienen dados retorna None
+        """
+        gestor = GestorPartida(2)
+        gestor.cacho_actual = gestor.lista_cachos[0]
+        for cacho in gestor.lista_cachos:
+            cacho.dados = []
+        
+        resultado = gestor.obtener_siguiente_cacho()
+        assert resultado is None
