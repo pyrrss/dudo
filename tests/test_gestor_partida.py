@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from unittest.mock import Mock
 from src.juego.gestor_partida import GestorPartida
 
 class TestGestorPartida:
