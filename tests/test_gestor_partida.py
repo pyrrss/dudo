@@ -255,3 +255,19 @@ class TestGestorPartida:
             cacho.ocultar_dados.assert_called()
         gestor.lista_cachos[0].mostrar_dados.assert_called()
         gestor.lista_cachos[1].mostrar_dados.assert_not_called()
+
+    def test_partida_terminada(self):
+        """
+        la partida termina cuando solo queda un cacho con dados y es el ganador
+        """
+        gestor = GestorPartida(3)
+    
+        # Simular que cacho1 y cacho2 pierden todos sus dados
+        gestor.lista_cachos[1].dados = []  # Sin dados
+        gestor.lista_cachos[2].dados = []  # Sin dados
+    
+        # acts y asserts
+        terminada = gestor.partida_terminada()
+        ganador = gestor.obtener_ganador()    
+        assert terminada == True
+        assert ganador == gestor.lista_cachos[0]
