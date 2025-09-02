@@ -25,3 +25,25 @@ class GestorPartida:
 
             # si hay empate (solo empatados siguen participando)
             cachos_participantes = ganadores
+
+    def establecer_direccion(self, direccion: str) -> None:
+        self.direccion = direccion
+
+    def obtener_siguiente_cacho(self) -> Cacho:
+        if self.direccion is None:
+            self.direccion = "horario"
+        
+        indice_actual = self.lista_cachos.index(self.cacho_actual)
+        num_cachos = len(self.lista_cachos)
+        
+        for _ in range(num_cachos):
+            if self.direccion == "horario":
+                indice_actual = (indice_actual + 1) % num_cachos
+            else:
+                indice_actual = (indice_actual - 1) % num_cachos
+
+            siguiente_cacho = self.lista_cachos[indice_actual]
+            if siguiente_cacho.get_cantidad_dados() > 0:
+                return siguiente_cacho
+        
+        return None
