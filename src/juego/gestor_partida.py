@@ -1,10 +1,11 @@
 from src.juego.cacho import Cacho
 from src.servicios.generador_aleatorio import GeneradorAleatorio
-
+from src.juego.arbitro_ronda import ArbitroRonda
 
 class GestorPartida:
     def __init__(self, num_jugadores: int):
         self.lista_cachos = [Cacho() for _ in range(num_jugadores)]
+        self.arbitro_ronda = ArbitroRonda()
         self.cacho_actual = None
         self.direccion = None
         self.apuesta_actual = (0, 0)

@@ -15,7 +15,7 @@ class ArbitroRonda:
         return cantidad_total
     
     def manejar_duda(self, lista_cachos: list[Cacho], apuesta: tuple[int, int], apostador: Cacho, dudador: Cacho, ronda_especial: bool = False) -> Cacho:
-        cantidad_total = self._contar_total(lista_cachos, apuesta[1])
+        cantidad_total = self._contar_total(lista_cachos, apuesta[1], ronda_especial)
 
         if cantidad_total >= apuesta[0]:
             dudador.quitar_dado()
